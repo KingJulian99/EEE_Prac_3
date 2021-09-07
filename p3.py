@@ -142,15 +142,15 @@ def btn_increase_pressed(channel):
     L2 = 0
     L3 = 0
 
-    if(current_number % 2^2 == 0):
+    if(current_number - 2^2 >= 0):
         L3 = 1
         current_number = current_number - 2^2
 
-    if(current_number % 2 == 0):
+    if(current_number - 2 >= 0):
         L2 = 1
         current_number = current_number - 2
 
-    if(current_number % 1 == 0):
+    if(current_number - 1 >= 0):
         L1 = 1
         current_number = current_number - 1
 
