@@ -87,8 +87,8 @@ def setup():
     GPIO.PWM(33, 50)	
 
     # Setup debouncing and callbacks
-    GPIO.add_event_detect(16, GPIO.RISING, callback=btn_increase_pressed(16), bouncetime=200)
-    GPIO.add_event_detect(18, GPIO.RISING, callback=btn_guess_pressed(18), bouncetime=200)
+    GPIO.add_event_detect(16, GPIO.RISING, callback=btn_increase_pressed, bouncetime=200)
+    GPIO.add_event_detect(18, GPIO.RISING, callback=btn_guess_pressed, bouncetime=200)
 
     pass
 
@@ -125,6 +125,8 @@ def btn_increase_pressed(channel):
     # Increase the value shown on the LEDs
     # You can choose to have a global variable store the user's current guess, 
     # or just pull the value off the LEDs when a user makes a guess
+
+    print("INCREASE")
 
     global L1
     global L2
