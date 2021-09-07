@@ -15,11 +15,6 @@ btn_increase = 18
 buzzer = None
 eeprom = ES2EEPROMUtils.ES2EEPROM()
 
-# LED variables
-L1 = 0
-L2 = 0
-L3 = 0
-current_number = 0
 
 
 # Print the game banner
@@ -92,8 +87,8 @@ def setup():
     GPIO.PWM(33, 50)	
 
     # Setup debouncing and callbacks
-    GPIO.add_event_detect(16, GPIO.RISING, callback=btn_increase_pressed(), bouncetime=200)
-    GPIO.add_event_detect(18, GPIO.RISING, callback=btn_guess_pressed(), bouncetime=200)
+    GPIO.add_event_detect(16, GPIO.RISING, callback=btn_increase_pressed(16), bouncetime=200)
+    GPIO.add_event_detect(18, GPIO.RISING, callback=btn_guess_pressed(18), bouncetime=200)
 
     pass
 
@@ -199,6 +194,16 @@ def trigger_buzzer():
 
 
 if __name__ == "__main__":
+    global L1
+    global L2
+    global L3
+    global current_number
+
+    L1 = 0
+    L2 = 0
+    L3 = 0
+    current_number = 0
+
     try:
         # Call setup function
         setup()
