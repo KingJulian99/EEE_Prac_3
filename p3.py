@@ -126,8 +126,12 @@ def btn_increase_pressed(channel):
     # You can choose to have a global variable store the user's current guess, 
     # or just pull the value off the LEDs when a user makes a guess
 
+    global L1
+    global L2
+    global L3
+
     # Find the current_number and increment it
-    current_number = L3*(2^2) + L2(2) + L1
+    current_number = L3*(2^2) + L2*(2) + L1
     current_number += 1
 
     # Now update values of LED values
