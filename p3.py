@@ -15,11 +15,6 @@ btn_increase = 18
 buzzer = None
 eeprom = ES2EEPROMUtils.ES2EEPROM()
 
-# LED variables
-L1 = 0
-L2 = 0
-L3 = 0
-current_number = 0
 
 
 # Print the game banner
@@ -203,6 +198,16 @@ def trigger_buzzer():
 
 
 if __name__ == "__main__":
+    global L1
+    global L2
+    global L3
+    global current_number
+
+    L1 = 0
+    L2 = 0
+    L3 = 0
+    current_number = 0
+
     try:
         # Call setup function
         setup()
