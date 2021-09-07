@@ -136,7 +136,7 @@ def btn_increase_pressed(channel):
     global L3
 
     # Find the current_number and increment it
-    current_number = L3*(2^2) + L2(2) + L1
+    current_number = L3*(2^2) + L2*(2) + L1
     current_number += 1
 
     # Now update values of LED values
