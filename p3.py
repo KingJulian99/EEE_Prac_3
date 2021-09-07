@@ -92,8 +92,8 @@ def setup():
     GPIO.PWM(33, 50)	
 
     # Setup debouncing and callbacks
-    GPIO.add_event_detect(16, GPIO.RISING, callback=btn_increase_pressed(16), bouncetime=200)
-    GPIO.add_event_detect(18, GPIO.RISING, callback=btn_guess_pressed(18), bouncetime=200)
+    GPIO.add_event_detect(16, GPIO.RISING, callback=btn_increase_pressed, bouncetime=200)
+    GPIO.add_event_detect(18, GPIO.RISING, callback=btn_guess_pressed, bouncetime=200)
 
     pass
 
@@ -145,15 +145,15 @@ def btn_increase_pressed(channel):
     L2 = 0
     L3 = 0
 
-    if(current_number % 2^2 == 0):
+    if(current_number - 2^2 >= 0):
         L3 = 1
         current_number = current_number - 2^2
 
-    if(current_number % 2 == 0):
+    if(current_number - 2 >= 0):
         L2 = 1
         current_number = current_number - 2
 
-    if(current_number % 1 == 0):
+    if(current_number - 1 >= 0):
         L1 = 1
         current_number = current_number - 1
 
