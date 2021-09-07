@@ -63,26 +63,33 @@ def display_scores(count, raw_data):
 
 # Setup Pins
 def setup():
-    	# Setup board mode
-	GPIO.setmode(GPIO.BOARD)
+    
+    # Setup board mode
+    GPIO.setmode(GPIO.BOARD)
     	
-	# Setup regular GPIO
-
-	# Setting up the buttons
-	GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUP_UP)
-	GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUP_UP)
+    # Setup regular GPIO
+    # Setting up the buttons
+    GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	
-	#Setting up the LEDs    	
-	GPIO.setup(11, GPIO.OUT)
-	GPIO.setup(13, GPIO.OUT)
-	GPIO.setup(15, GPIO.OUT)
-	GPIO.setup(32, GPIO.OUT)
+    #Setting up the LEDs    	
+    GPIO.setup(11, GPIO.OUT)
+    GPIO.setup(13, GPIO.OUT)
+    GPIO.setup(15, GPIO.OUT)
+    GPIO.setup(32, GPIO.OUT)
 
-	# Setup PWM channels
-    	
+    # Setup the transistor
+    GPIO.setup(33, GPIO.OUT)
 
-	# Setup debouncing and callbacks
-    	pass
+    # Setup PWM channels
+    GPIO.PWM(32, 50)	
+    GPIO.PWM(33, 50)	
+
+    # Setup debouncing and callbacks
+    GPIO.add_event_detect(16, GPIO.RISING, callback=btn_increase_pressed(), bouncetime=200)
+    GPIO.add_event_detect(18, GPIO.RISING, callback=btn_guess_pressed(), bouncetime=200)
+
+    pass
 
 
 # Load high scores
