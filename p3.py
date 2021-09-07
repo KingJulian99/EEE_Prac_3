@@ -15,6 +15,12 @@ btn_increase = 18
 buzzer = None
 eeprom = ES2EEPROMUtils.ES2EEPROM()
 
+# LED variables
+L1 = 0
+L2 = 0
+L3 = 0
+current_number = 0
+
 
 # Print the game banner
 def welcome():
@@ -124,6 +130,36 @@ def btn_increase_pressed(channel):
     # Increase the value shown on the LEDs
     # You can choose to have a global variable store the user's current guess, 
     # or just pull the value off the LEDs when a user makes a guess
+
+    # Find the current_number and increment it
+    current_number = L3*(2^2) + L2(2) + L1
+    current_number += 1
+
+    # Now update values of LED values
+    # First, set all to 0 by default
+    L1 = 0
+    L2 = 0
+    L3 = 0
+
+    if(current_number % 2^2 == 0):
+        L3 = 1
+        current_number = current_number - 2^2
+
+    if(current_number % 2 == 0):
+        L2 = 1
+        current_number = current_number - 2
+
+    if(current_number % 1 == 0):
+        L1 = 1
+        current_number = current_number - 1
+
+    if(current_number != 0):
+        print("huge error lol")
+
+    GPIO.output(11, L1)
+    GPIO.output(13, L2)
+    GPIO.output(15, L3)
+
     pass
 
 
