@@ -132,17 +132,22 @@ def btn_increase_pressed(channel):
     global L2
     global L3
 
+    print("start L1 = " + str(L1))
+    print("start L2 = " + str(L2))
+    print("start L3 = " + str(L3))
+
     # Find the current_number and increment it
-    current_number = L3*(2^2) + L2*(2) + L1
+    current_number = L3*(2**2) + L2*(2) + L1
     current_number += 1
 
+    print("Current number = " + str(current_number))
     # Now update values of LED values
     # First, set all to 0 by default
     L1 = 0
     L2 = 0
     L3 = 0
 
-    if(current_number - 2^2 >= 0):
+    if(current_number - 2**2 >= 0):
         L3 = 1
         current_number = current_number - 2^2
 
@@ -156,6 +161,11 @@ def btn_increase_pressed(channel):
 
     if(current_number != 0):
         print("huge error lol")
+
+    print("end L1 = " + str(L1))
+    print("end L2 = " + str(L2))
+    print("end L3 = " + str(L3))
+
 
     GPIO.output(11, L1)
     GPIO.output(13, L2)
