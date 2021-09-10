@@ -87,8 +87,8 @@ def setup():
     GPIO.PWM(33, 50)	
 
     # Setup debouncing and callbacks
-    GPIO.add_event_detect(16, GPIO.RISING, callback=btn_increase_pressed, bouncetime=200)
-    GPIO.add_event_detect(18, GPIO.RISING, callback=btn_guess_pressed, bouncetime=200)
+    GPIO.add_event_detect(16, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=200)
+    GPIO.add_event_detect(18, GPIO.FALLING, callback=btn_guess_pressed, bouncetime=200)
 
     pass
 
@@ -187,6 +187,9 @@ def btn_guess_pressed(channel):
     # - add the new score
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
+    
+    
+    menu()
     pass
 
 
