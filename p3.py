@@ -189,7 +189,6 @@ def btn_guess_pressed(channel):
     # - add the new score
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
-<<<<<<< HEAD
     
     global L1
     global L2
@@ -198,11 +197,8 @@ def btn_guess_pressed(channel):
     actualValue = generate_number()
     guessedValue = L1 * 1 + L2 * 2 + L3 * 2**2
 
-    
-    
-    
     pass
-=======
+
     start_time = time.time()
 
     while GPIO.input(channel) == 0: # Wait for the button up
@@ -222,7 +218,6 @@ def btn_guess_pressed(channel):
     else:
         print("menu")
         menu()
->>>>>>> caadfdd33b65b002ca66a28fc0eccb48f8a7debe
 
 
 # LED Brightness
@@ -232,6 +227,16 @@ def accuracy_leds():
     # - For example if the answer is 6 and a user guesses 4, the brightness should be at 4/6*100 = 66%
     # - If they guessed 7, the brightness would be at ((8-7)/(8-6)*100 = 50%
     global led
+    brightness = 0
+
+    if actual > guess:
+	brightness = guess / actual * 100
+    elif actual < guess:
+    	brightness = (8 - guess) / (8 - actual) * 100
+    else:
+	brightness = 100
+
+    led.ChangeDutyCycle(brightness)
 
     pass
 
@@ -244,6 +249,18 @@ def trigger_buzzer():
     # If the user is off by an absolute value of 2, the buzzer should sound twice every second
     # If the user is off by an absolute value of 1, the buzzer should sound 4 times a second
     global buzzer
+    frequency = 0
+
+    diff = Math.abs(actual - guess)
+
+    if diff == 3:
+	frequency = 1
+    elif diff == 2:
+	frequency = 2
+    elif diff == 1:
+	frequency = 4
+
+    buzzer.ChangeFrequency(frequency)
 
     pass
 
