@@ -1,3 +1,4 @@
+
 # Import libraries
 import RPi.GPIO as GPIO
 import random
@@ -13,6 +14,7 @@ LED_accuracy = 32
 btn_submit = 16
 btn_increase = 18
 buzzer = None
+led = None
 eeprom = ES2EEPROMUtils.ES2EEPROM()
 
 
@@ -64,7 +66,10 @@ def display_scores(count, raw_data):
 
 # Setup Pins
 def setup():
-    
+
+    global buzzer
+    global led    
+
     # Setup board mode
     GPIO.setmode(GPIO.BOARD)
     	
@@ -85,9 +90,6 @@ def setup():
     # Setup PWM channels
     led = GPIO.PWM(32, 50)	
     buzzer = GPIO.PWM(33, 50)
-
-    led.start(50)
-    buzzer.start(50)
 
     # Setup debouncing and callbacks
     GPIO.add_event_detect(16, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=200)
@@ -187,8 +189,16 @@ def btn_guess_pressed(channel):
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
     
+    global L1
+    global L2
+    global L3
+
+    actualValue = generate_number()
+    guessedValue = L1 * 1 + L2 * 2 + L3 * 2**2
+
     
-    menu()
+    
+    
     pass
 
 
@@ -198,6 +208,8 @@ def accuracy_leds():
     # - The % brightness should be directly proportional to the % "closeness"
     # - For example if the answer is 6 and a user guesses 4, the brightness should be at 4/6*100 = 66%
     # - If they guessed 7, the brightness would be at ((8-7)/(8-6)*100 = 50%
+    global led
+
     pass
 
 # Sound Buzzer
@@ -208,6 +220,8 @@ def trigger_buzzer():
     # If the user is off by an absolute value of 3, the buzzer should sound once every second
     # If the user is off by an absolute value of 2, the buzzer should sound twice every second
     # If the user is off by an absolute value of 1, the buzzer should sound 4 times a second
+    global buzzer
+
     pass
 
 
