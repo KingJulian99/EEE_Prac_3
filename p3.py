@@ -1,5 +1,6 @@
 
 # Import libraries
+import time
 import RPi.GPIO as GPIO
 import random
 import ES2EEPROMUtils
@@ -188,6 +189,7 @@ def btn_guess_pressed(channel):
     # - add the new score
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
+<<<<<<< HEAD
     
     global L1
     global L2
@@ -200,6 +202,27 @@ def btn_guess_pressed(channel):
     
     
     pass
+=======
+    start_time = time.time()
+
+    while GPIO.input(channel) == 0: # Wait for the button up
+        pass
+
+    timeElapsed = time.time() - start_time
+    buttonStatus = 1    
+
+    if .5 <= timeElapsed < 3:       
+        buttonStatus = 1        # Submit
+    elif 3 <= timeElapsed:         
+        buttonStatus = 2      # Menu
+	
+    if(buttonStatus == 1):
+	# submit
+        print("submit")
+    else:
+        print("menu")
+        menu()
+>>>>>>> caadfdd33b65b002ca66a28fc0eccb48f8a7debe
 
 
 # LED Brightness
