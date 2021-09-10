@@ -193,8 +193,9 @@ def btn_guess_pressed(channel):
         pass
 
     timeElapsed = time.time() - start_time
-    
-    if .5 <= timeElapsed < 2:       
+    buttonStatus = 1    
+
+    if .5 <= timeElapsed < 3:       
         buttonStatus = 1        # Submit
     elif 3 <= timeElapsed:         
         buttonStatus = 2      # Menu
