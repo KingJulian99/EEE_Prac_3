@@ -200,10 +200,10 @@ def btn_guess_pressed(channel):
 	
     if(buttonStatus == 1):
 	# submit
-	print("submit")
+        print("submit")
     else:
-	print("menu")
-	menu()
+        print("menu")
+        menu()
 
 
 # LED Brightness
