@@ -146,12 +146,12 @@ def btn_increase_pressed(channel):
     L1 = 0
     L2 = 0
     L3 = 0
-
+    
     if(current_number > 7):
-	current_number = 0
-	L1 = 0
-	L2 = 0
-	L3 = 0
+        current_number = 0
+        L1 = 0
+        L2 = 0
+        L3 = 0
 	
     else:
         if(current_number - 2**2 >= 0):
