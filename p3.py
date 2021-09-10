@@ -186,10 +186,24 @@ def btn_guess_pressed(channel):
     # - add the new score
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
+    start_time = time.time()
+
+    while GPIO.input(channel) == 0: # Wait for the button up
+        pass
+
+    timeElapsed = time.time() - start_time
     
-    
-    menu()
-    pass
+    if .5 <= timeElapsed < 2:       
+        buttonStatus = 1        # Submit
+    elif 3 <= timeElapsed:         
+        buttonStatus = 2      # Menu
+	
+    if(buttonStatus == 1):
+	# submit
+	print("submit")
+    else:
+	print("menu")
+	menu()
 
 
 # LED Brightness
