@@ -17,7 +17,8 @@ btn_increase = 18
 buzzer = None
 led = None
 eeprom = ES2EEPROMUtils.ES2EEPROM()
-
+actual = 0
+guess = 0
 
 
 # Print the game banner
@@ -133,9 +134,7 @@ def btn_increase_pressed(channel):
     # or just pull the value off the LEDs when a user makes a guess
 
 
-    global L1
-    global L2
-    global L3
+    global L1, L2, L3
 
     # Find the current_number and increment it
     current_number = L3*(2**2) + L2*(2) + L1
@@ -190,14 +189,12 @@ def btn_guess_pressed(channel):
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
     
-    global L1
-    global L2
-    global L3
+    global L1, L2, L3, actual, guess
 
-    actualValue = generate_number()
-    guessedValue = L1 * 1 + L2 * 2 + L3 * 2**2
+    actual = generate_number()
+    guess = L1 * 1 + L2 * 2 + L3 * 2**2
 
-    pass
+    print(guess)
 
     start_time = time.time()
 
@@ -211,10 +208,12 @@ def btn_guess_pressed(channel):
         buttonStatus = 1        # Submit
     elif 3 <= timeElapsed:         
         buttonStatus = 2      # Menu
-	
     if(buttonStatus == 1):
 	# submit
         print("submit")
+        trigger_buzzer()
+        accuracy_leds()
+        
     else:
         print("menu")
         menu()
@@ -226,15 +225,15 @@ def accuracy_leds():
     # - The % brightness should be directly proportional to the % "closeness"
     # - For example if the answer is 6 and a user guesses 4, the brightness should be at 4/6*100 = 66%
     # - If they guessed 7, the brightness would be at ((8-7)/(8-6)*100 = 50%
-    global led
+    global led, actual, guess
     brightness = 0
 
     if actual > guess:
-	brightness = guess / actual * 100
+        brightness = guess / actual * 100
     elif actual < guess:
     	brightness = (8 - guess) / (8 - actual) * 100
     else:
-	brightness = 100
+        brightness = 100
 
     led.ChangeDutyCycle(brightness)
 
@@ -248,18 +247,20 @@ def trigger_buzzer():
     # If the user is off by an absolute value of 3, the buzzer should sound once every second
     # If the user is off by an absolute value of 2, the buzzer should sound twice every second
     # If the user is off by an absolute value of 1, the buzzer should sound 4 times a second
-    global buzzer
+    global buzzer, actual, guess
+
     frequency = 0
 
-    diff = Math.abs(actual - guess)
+    diff = abs(actual - guess)
 
     if diff == 3:
-	frequency = 1
+        frequency = 1
     elif diff == 2:
-	frequency = 2
+        frequency = 2
     elif diff == 1:
-	frequency = 4
+        frequency = 4
 
+    buzzer.start(50)
     buzzer.ChangeFrequency(frequency)
 
     pass
