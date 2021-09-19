@@ -122,6 +122,8 @@ def setup():
     GPIO.add_event_detect(16, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=200)
     GPIO.add_event_detect(18, GPIO.FALLING, callback=btn_guess_pressed, bouncetime=200)
 
+    # One-time clear of scores.
+
     pass
 
 
@@ -271,8 +273,8 @@ def btn_guess_pressed(channel):
 
         if(guess == actual):
             print("Correct!")
-            GPIO.output(LED_value, False) 
-            GPIO.output(33,GPIO.LOW)  
+            #GPIO.output(LED_value, False) 
+            GPIO.output(33, GPIO.LOW)  
             save_scores()
             menu()
 
