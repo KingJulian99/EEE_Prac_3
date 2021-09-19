@@ -268,7 +268,7 @@ def btn_guess_pressed(channel):
 
         scorecount+=1
 
-        print("You guessed " + guess)
+        print("You guessed " + str(guess))
 
         if(guess == actual):
             print("Correct!")
