@@ -50,7 +50,7 @@ def menu():
         s_count, ss = fetch_scores()
         display_scores(s_count, ss)
     elif option == "P":
-        end_of_game = false
+        end_of_game = False
         os.system('clear')
         print("Starting a new round!")
         print("Use the buttons on the Pi to make and submit your guess!")
@@ -271,9 +271,9 @@ def btn_guess_pressed(channel):
 
         print("You guessed " + str(guess))
 
-        if(guess == actual and end_of_game == false):
+        if(guess == actual and end_of_game == False):
             print("Correct!")
-            end_of_game = true
+            end_of_game = True
             #GPIO.output(LED_value, False) 
             buzzer.stop()
             #GPIO.output(33, GPIO.LOW)  
