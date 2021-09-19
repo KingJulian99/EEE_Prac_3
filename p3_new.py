@@ -316,7 +316,7 @@ def trigger_buzzer():
     # If the user is off by an absolute value of 1, the buzzer should sound 4 times a second
     global buzzer, actual, guess
 
-    frequency = 0
+    frequency = 0.5
 
     diff = abs(actual - guess)
 
