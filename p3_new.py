@@ -42,7 +42,7 @@ def welcome():
 
 # Print the game menu
 def menu():
-    global end_of_game
+    global end_of_game, actual
     option = input("Select an option:   H - View High Scores     P - Play Game       Q - Quit\n")
     option = option.upper()
     if option == "H":
@@ -51,6 +51,7 @@ def menu():
         s_count, ss = fetch_scores()
         display_scores(s_count, ss)
     elif option == "P":
+	end_of_game = false
         os.system('clear')
         print("Starting a new round!")
         print("Use the buttons on the Pi to make and submit your guess!")
@@ -246,7 +247,7 @@ def btn_guess_pressed(channel):
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
     
-    global L1, L2, L3, actual, guess, scorecount, LED_value
+    global L1, L2, L3, actual, guess, scorecount, LED_value, end_of_game
 
     guess = L1 * 1 + L2 * 2 + L3 * 2**2
 
@@ -271,8 +272,9 @@ def btn_guess_pressed(channel):
 
         print("You guessed " + str(guess))
 
-        if(guess == actual):
+        if(guess == actual and end_of_game == false):
             print("Correct!")
+	    end_of_game = true
             #GPIO.output(LED_value, False) 
             buzzer.stop()
             #GPIO.output(33, GPIO.LOW)  
