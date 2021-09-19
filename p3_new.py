@@ -244,7 +244,7 @@ def btn_guess_pressed(channel):
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
     
-    global L1, L2, L3, actual, guess
+    global L1, L2, L3, actual, guess, scorecount, LED_value
 
     actual = generate_number()
     guess = L1 * 1 + L2 * 2 + L3 * 2**2
@@ -276,7 +276,7 @@ def btn_guess_pressed(channel):
             GPIO.output(33,GPIO.LOW)  
             save_scores()
             menu()
-            
+
         else:
             print("Wrong!")
             trigger_buzzer()
