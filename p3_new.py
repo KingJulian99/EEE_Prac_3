@@ -24,7 +24,6 @@ guess = 0  # The guess by user
 totalscores = 0
 scorecount = 0
 
-end_of_game = None
 eeprom_scores = [] # Array storing fetched scores!
 
 # Print the game banner
