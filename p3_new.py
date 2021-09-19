@@ -274,7 +274,8 @@ def btn_guess_pressed(channel):
         if(guess == actual):
             print("Correct!")
             #GPIO.output(LED_value, False) 
-            GPIO.output(33, GPIO.LOW)  
+            buzzer.stop()
+            #GPIO.output(33, GPIO.LOW)  
             save_scores()
             menu()
 
