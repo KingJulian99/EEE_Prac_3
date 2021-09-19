@@ -55,7 +55,7 @@ def menu():
         print("Starting a new round!")
         print("Use the buttons on the Pi to make and submit your guess!")
         print("Press and hold the guess button to cancel your game")
-        value = generate_number()
+        actual = generate_number()
         while not end_of_game:
             pass
     elif option == "Q":
@@ -246,7 +246,6 @@ def btn_guess_pressed(channel):
     
     global L1, L2, L3, actual, guess, scorecount, LED_value
 
-    actual = generate_number()
     guess = L1 * 1 + L2 * 2 + L3 * 2**2
 
     print(guess)
