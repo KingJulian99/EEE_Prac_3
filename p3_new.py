@@ -273,7 +273,7 @@ def btn_guess_pressed(channel):
 
         if(guess == actual and end_of_game == false):
             print("Correct!")
-	    end_of_game = true
+            end_of_game = true
             #GPIO.output(LED_value, False) 
             buzzer.stop()
             #GPIO.output(33, GPIO.LOW)  
