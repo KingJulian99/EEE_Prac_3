@@ -327,7 +327,7 @@ def trigger_buzzer():
     elif diff == 1:
         frequency = 4
 
-    buzzer.start(50)
+    buzzer.start(10)
     buzzer.ChangeFrequency(frequency)
 
     pass
