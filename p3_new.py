@@ -48,6 +48,7 @@ def menu():
         print("HIGH SCORES!!")
         s_count, ss = fetch_scores()
         display_scores(s_count, ss)
+        menu()
     elif option == "P":
         end_of_game = False
         os.system('clear')
@@ -193,6 +194,7 @@ def save_scores():
         # user score
         all_scores.append(score[1])
 
+    eeprom.clear(total_scores)
     eeprom.write_block(1, all_scores) # write them all in one go
 
 
