@@ -6,7 +6,7 @@ import random
 import ES2EEPROMUtils
 import os
 
-end_of_game = None  # Set if the user wins or ends the game.
+end_of_game = None  # Set if the user ends the game.
 
 # DEFINE THE PINS USED HERE
 LED_value = [11, 13, 15]
@@ -166,7 +166,11 @@ def save_scores():
     # fetch scores
     total_scores, eeprom_scores = fetch_scores() 
 
-    name = input("Enter your 3 letter name: \n")  
+    name = input("Enter your 3 letter name: \n")
+    while len(name) > 3 or len(name) < 3:
+        print("The name your entered wasn't 3 letters.")
+        name = input("Enter your 3 letter name: \n")  
+    
     new_score = [name[:3], score_count] 
     eeprom_scores.append(new_score) 
 
@@ -294,7 +298,7 @@ def btn_guess_pressed(channel):
             GPIO.output(LED_value, False)
 
             save_scores()
-            end_of_game = True
+            #end_of_game = True
             menu()
 
         else:
@@ -307,7 +311,7 @@ def btn_guess_pressed(channel):
         GPIO.output(LED_value, GPIO.LOW)
         buzzer.stop()
         led.stop()
-        end_of_game = True
+        #end_of_game = True
         menu()
 
 
