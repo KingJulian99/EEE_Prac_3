@@ -108,7 +108,7 @@ def setup():
 
     # Setup PWM channels
     led = GPIO.PWM(32, 50)	
-    buzzer = GPIO.PWM(33, 0)
+    buzzer = GPIO.PWM(33, 0.01)
 
     # Setting all pins to low
     GPIO.setup(11, GPIO.LOW)
@@ -308,11 +308,12 @@ def accuracy_leds():
     brightness = 0
 
     if actual > guess:
-        brightness = guess / actual * 100
+        brightness = (guess / actual) * 100
         led.ChangeDutyCycle(brightness)
+
     elif actual < guess:
-    	brightness = (8 - guess) / (8 - actual) * 100
-        led.ChangeDutyCycle(brightness)
+    	brightness = ((8 - guess) / (8 - actual)) * 100
+    	led.ChangeDutyCycle(brightness)
 
     pass
 
