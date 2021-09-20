@@ -280,9 +280,8 @@ def btn_guess_pressed(channel):
 
         print("You guessed " + str(guess))
 
-        if(guess == actual and end_of_game == False):
+        if(guess == actual):
             print("Correct!")
-            end_of_game = True
             
             # stop buzzer
             buzzer.stop()
@@ -290,6 +289,8 @@ def btn_guess_pressed(channel):
             # stop LEDs
             
             save_scores()
+
+            end_of_game = True
 
         else:
             print("Wrong!")
