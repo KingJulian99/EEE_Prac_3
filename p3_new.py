@@ -6,8 +6,7 @@ import random
 import ES2EEPROMUtils
 import os
 
-# some global variables that need to change as we run the program
-end_of_game = None  # set if the user wins or ends the game
+end_of_game = None 
 
 # DEFINE THE PINS USED HERE
 LED_value = [11, 13, 15]
@@ -21,8 +20,8 @@ eeprom = ES2EEPROMUtils.ES2EEPROM()
 actual = 0 # The number user has to guess
 guess = 0  # The guess by user
 
-totalscores = 0
-scorecount = 0
+total_scores = 0
+score_count = 0
 
 eeprom_scores = [] # Array storing fetched scores!
 
@@ -66,21 +65,21 @@ def menu():
 
 
 def display_scores(count, raw_data):
-    # print the scores to the screen in the expected format
-    print("There are {} scores. Here are the top 3!".format(count))
-    # print out the scores in the required format
 
-    counts = 1
-    place = 0
+    print("There are {} scores. Here are the top 3!".format(count))
+
+    count = 1
+    position = 0 # skip the "how many scores" byte.
 
     for data in raw_data:
-        if place == 1:
-            place += 1
-        else :
-            print("{} - {} took {} guesses".format(counts, data[0],data[1]))
-            counts +=1
-        if counts == 4:
-            break
+        if (position == 1):
+            position += 1
+        else:
+            if(count == 4):
+                break
+            else:
+                print( "{} - {} : {} guesses".format(count, data[0], data[1]) )
+                count += 1
 
     pass
 
@@ -121,61 +120,72 @@ def setup():
     GPIO.add_event_detect(16, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=200)
     GPIO.add_event_detect(18, GPIO.FALLING, callback=btn_guess_pressed, bouncetime=200)
 
-    # One-time clear of scores.
-
-    pass
+    # One-time clear of scores. --> Done by running EEPROM python class
 
 
-# Load high scores **CHANGE VAR NAMES**
 def fetch_scores():
-    # get however many scores there are
-    score_count = eeprom.read_byte(0)
+    # Each reg = 8 bits (1 byte). 
+    # Each block has 4 regs
 
-    # array of scores and names taken from the EEPROM into a 2D array
+    # This function returns an int, then array of score arrays [[name, score], [name, score]]
+
+    # Get number of scores
+    num_scores = eeprom.read_byte(0)
+
+    # Get scores 
     scores = []
-    # Get the scores
-    # convert the codes back to ascii
-    for i in range(1, score_count+1):
-        reset = []  #ensures that reset is emptied before every iteration
-        score = eeprom.read_block(i,4) # This will read registers 1 to 4 from block i and place it into scores
 
-        # Convert the "letter" registers into char values to generate words
-        letter1 = chr(score[0])
-        letter2 = chr(score[1])
-        letter3 = chr(score[2])
+    # Stores current score in array
+    current_score_arr = []
 
-        # Turn the letters into a word for the user name
-        name = letter1 + letter2 + letter3
-        # Adds the name formed and scores to an empty reset array as 2 entries
-        reset.append(name)
-        reset.append(score[3])
+    for i in range(1, num_scores + 1):
+        current_score_arr.clear()
 
-        scores.append(reset) #Adds the values from reset to scorelist, to form a 2D array of Name and Score
-     # return back the results
-    return score_count, scores
+        score = eeprom.read_block(i, 4) # Read next score
+
+        # Get letters to create name
+        name = chr(score[0]) + chr(score[1]) + chr(score[2])
+
+        current_score_arr.append(name)
+        current_score_arr.append(score[3])
+
+        scores.append(current_score_arr)
+
+    return num_scores, scores
 
 
 # Save high scores
 def save_scores():
-    global eeprom_scores, totalscores, scorecount
+
+    global eeprom_scores, total_scores, score_count
+
     # fetch scores
-    totalscores, eeprom_scores = fetch_scores()
-    eeprom.write_byte(0, totalscores+ 1)  # update total amount of scores
-    name = input("Enter your 3 letter name: \n")  # Prompt user for their Name
-    inputScore = [name[:3], scorecount] # Holder for the name and score number to be sent to the eeprom
-    eeprom_scores.append(inputScore) #Adds the name and score counts to the score values array
+    total_scores, eeprom_scores = fetch_scores() 
 
-    #sort
-    sortedArray = sorted(eeprom_scores, key=lambda x: x[1])
+    name = input("Enter your 3 letter name: \n")  
+    new_score = [name[:3], score_count] 
+    eeprom_scores.append(new_score) 
 
-    #Write the given values to the EEPROM
-    transmittedvalues = []
-    for scores in sortedArray: #adds the name and score number to a matrix which is written into the eeprom
-        for i in range(3): #loops through 3 letters in sortedArray and converts it into binary for the EEPROM
-            transmittedvalues.append(ord(scores[0][i]))
-        transmittedvalues.append(scores[1])
-    eeprom.write_block(1,transmittedvalues)
-    pass
+    # sort scores based off guess count (x[1]) - second element in array
+    sorted_arr = sorted( eeprom_scores, key=lambda x: x[1] )
+
+    # increase total number of scores 
+    eeprom.write_byte(0, total_scores + 1) 
+
+    # write all scores back ([byte, byte, byte, byte, byte...])
+    # contains all scores following eachother (char, char, char, int, char, char, char, int)
+    all_scores = []
+
+    for score in sorted_arr: 
+
+        # user name
+        for i in range(3): 
+            all_scores.append( ord(score[0][i]) )
+
+        # user score
+        all_scores.append(score[1])
+
+    eeprom.write_block(1, all_scores) # write them all in one go
 
 
 # Generate guess number
@@ -245,11 +255,9 @@ def btn_guess_pressed(channel):
     # - sort the scores
     # - Store the scores back to the EEPROM, being sure to update the score count
     
-    global L1, L2, L3, actual, guess, scorecount, LED_value, end_of_game
+    global L1, L2, L3, actual, guess, score_count, LED_value, end_of_game
 
     guess = L1 * 1 + L2 * 2 + L3 * 2**2
-
-    print(guess)
 
     start_time = time.time()
 
@@ -263,29 +271,31 @@ def btn_guess_pressed(channel):
         buttonStatus = 1        # Submit case
     elif 3 <= timeElapsed:         
         buttonStatus = 2      # Menu
-    if(buttonStatus == 1):
-	# submit
 
-        scorecount+=1
+
+    if(buttonStatus == 1):
+	
+        score_count+=1
 
         print("You guessed " + str(guess))
 
-        if(guess == actual and end_of_game == False):
+        if(guess == actual):
             print("Correct!")
-            end_of_game = True
-            #GPIO.output(LED_value, False) 
+            
+            # stop buzzer
             buzzer.stop()
-            #GPIO.output(33, GPIO.LOW)  
+
+            # stop LEDs
+            
             save_scores()
-            menu()
+
+            end_of_game = True
 
         else:
             print("Wrong!")
+
             trigger_buzzer()
             accuracy_leds()
-        
-    else:
-        menu()
 
 
 # LED Brightness
@@ -351,7 +361,6 @@ if __name__ == "__main__":
         welcome()
         while True:
             menu()
-            pass
     except Exception as e:
         print(e)
     finally:
