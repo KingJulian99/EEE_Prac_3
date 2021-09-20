@@ -297,10 +297,10 @@ def btn_guess_pressed(channel):
 
             # stop LEDs
             led.stop()
-            GPIO.output(LED_value, False)
+            GPIO.output(LED_value, GPIO.LOW)
 
             save_scores()
-            #end_of_game = True
+            end_of_game = True
             menu()
 
         else:
@@ -310,13 +310,10 @@ def btn_guess_pressed(channel):
             accuracy_leds()
 
     elif buttonStatus == 2:
-        #GPIO.output(LED_value, GPIO.LOW)
-        #buzzer.stop()
-        #led.stop()
-        #end_of_game = True
-        
-        GPIO.cleanup()
-        setup()
+        GPIO.output(LED_value, GPIO.LOW)
+        buzzer.stop()
+        led.stop()
+        end_of_game = True
         menu()
 
 
