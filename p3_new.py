@@ -286,16 +286,21 @@ def btn_guess_pressed(channel):
             buzzer.stop()
 
             # stop LEDs
-            
-            save_scores()
+            GPIO.output(LED_value, False)
 
+            save_scores()
             end_of_game = True
+            menu()
 
         else:
             print("Wrong!")
 
             trigger_buzzer()
             accuracy_leds()
+            
+    elif buttonStatus == 2:
+        GPIO.cleanup()
+        menu()
 
 
 # LED Brightness
@@ -306,6 +311,7 @@ def accuracy_leds():
     # - If they guessed 7, the brightness would be at ((8-7)/(8-6)*100 = 50%
     global led, actual, guess
     brightness = 0
+    led.start(brightness)
 
     if actual > guess:
         brightness = (guess / actual) * 100
