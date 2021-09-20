@@ -103,7 +103,7 @@ def setup():
     GPIO.setup(15, GPIO.OUT)
     GPIO.setup(32, GPIO.OUT)
 
-    # Setup the transistor/buzzer
+    # Setup the transistor
     GPIO.setup(33, GPIO.OUT)
 
     # Setup PWM channels
@@ -114,6 +114,7 @@ def setup():
     GPIO.setup(11, GPIO.LOW)
     GPIO.setup(13, GPIO.LOW)
     GPIO.setup(15, GPIO.LOW)
+    GPIO.setup(32, GPIO.OUT)
     GPIO.output(33, GPIO.LOW)
 
     # Setup debouncing and callbacks
@@ -135,18 +136,18 @@ def fetch_scores():
     # Get scores 
     scores = []
 
-    # Stores current score in array
-    current_score_arr = []
-
     for i in range(1, num_scores + 1):
-        current_score_arr.clear()
 
-        score = eeprom.read_block(i, 4) # Read next score
+        # Stores current score in array
+        current_score_arr = []
 
-        # Get letters to create name
+        score = eeprom.read_block(i, 4) # Read next score (32 bits - 4 words)
+
+        # Get letters to create name. Might be bug here!!
         name = chr(score[0]) + chr(score[1]) + chr(score[2])
+        print("Your name is: " + str(name))
 
-        current_score_arr.append(name)
+        current_score_arr.append(str(name))
         current_score_arr.append(score[3])
 
         scores.append(current_score_arr)
@@ -306,14 +307,15 @@ def accuracy_leds():
     # - If they guessed 7, the brightness would be at ((8-7)/(8-6)*100 = 50%
     global led, actual, guess
     brightness = 0
-    led.start(0)
 
     if actual > guess:
-        brightness = ( guess / actual ) * 100
-        led.ChangeDutyCycle(brightness)
+        brightness = guess / actual * 100
     elif actual < guess:
-    	brightness = ( (8 - guess) / (8 - actual) ) * 100
-        led.ChangeDutyCycle(brightness)
+    	brightness = (8 - guess) / (8 - actual) * 100
+    else:
+        brightness = 100
+
+    led.ChangeDutyCycle(brightness)
 
     pass
 
