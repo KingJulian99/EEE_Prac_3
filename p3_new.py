@@ -194,7 +194,6 @@ def save_scores():
         # user score
         all_scores.append(score[1])
 
-    eeprom.clear(total_scores)
     eeprom.write_block(1, all_scores) # write them all in one go
 
 
