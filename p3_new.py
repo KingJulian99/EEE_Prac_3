@@ -104,7 +104,7 @@ def setup():
     GPIO.setup(15, GPIO.OUT)
     GPIO.setup(32, GPIO.OUT)
 
-    # Setup the transistor
+    # Setup the transistor/buzzer
     GPIO.setup(33, GPIO.OUT)
 
     # Setup PWM channels
@@ -115,7 +115,6 @@ def setup():
     GPIO.setup(11, GPIO.LOW)
     GPIO.setup(13, GPIO.LOW)
     GPIO.setup(15, GPIO.LOW)
-    GPIO.setup(32, GPIO.OUT)
     GPIO.output(33, GPIO.LOW)
 
     # Setup debouncing and callbacks
@@ -297,15 +296,14 @@ def accuracy_leds():
     # - If they guessed 7, the brightness would be at ((8-7)/(8-6)*100 = 50%
     global led, actual, guess
     brightness = 0
+    led.start(0)
 
     if actual > guess:
-        brightness = guess / actual * 100
+        brightness = ( guess / actual ) * 100
+        led.ChangeDutyCycle(brightness)
     elif actual < guess:
-    	brightness = (8 - guess) / (8 - actual) * 100
-    else:
-        brightness = 100
-
-    led.ChangeDutyCycle(brightness)
+    	brightness = ( (8 - guess) / (8 - actual) ) * 100
+        led.ChangeDutyCycle(brightness)
 
     pass
 
