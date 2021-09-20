@@ -111,11 +111,13 @@ def setup():
     led = GPIO.PWM(32, 50)	
     buzzer = GPIO.PWM(33, 50)
 
+    led.start(0)
+
     # Setting all pins to low
     GPIO.setup(11, GPIO.LOW)
     GPIO.setup(13, GPIO.LOW)
     GPIO.setup(15, GPIO.LOW)
-    GPIO.setup(32, GPIO.OUT)
+    #GPIO.setup(32, GPIO.OUT)
     GPIO.output(33, GPIO.LOW)
 
     # Setup debouncing and callbacks
@@ -250,8 +252,7 @@ def btn_guess_pressed(channel):
 
     guess = L1 * 1 + L2 * 2 + L3 * 2**2
 
-    print(guess)
-
+    
     start_time = time.time()
 
     while GPIO.input(channel) == 0: # Wait for the button up
