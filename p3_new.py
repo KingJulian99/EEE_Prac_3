@@ -111,9 +111,9 @@ def setup():
     buzzer = GPIO.PWM(33, 0.01)
 
     # Setting all pins to low
-    GPIO.setup(11, GPIO.LOW)
-    GPIO.setup(13, GPIO.LOW)
-    GPIO.setup(15, GPIO.LOW)
+    GPIO.output(11, GPIO.LOW)
+    GPIO.output(13, GPIO.LOW)
+    GPIO.output(15, GPIO.LOW)
     GPIO.output(33, GPIO.LOW)
 
     # Setup debouncing and callbacks
@@ -286,6 +286,7 @@ def btn_guess_pressed(channel):
             buzzer.stop()
 
             # stop LEDs
+            led.stop()
             GPIO.output(LED_value, False)
 
             save_scores()
@@ -297,9 +298,11 @@ def btn_guess_pressed(channel):
 
             trigger_buzzer()
             accuracy_leds()
-            
+
     elif buttonStatus == 2:
-        GPIO.cleanup()
+        GPIO.output(LED_value, GPIO.LOW)
+        buzzer.stop()
+        led.stop()
         menu()
 
 
