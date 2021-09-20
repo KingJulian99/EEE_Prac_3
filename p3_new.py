@@ -6,7 +6,7 @@ import random
 import ES2EEPROMUtils
 import os
 
-end_of_game = None 
+end_of_game = None  # Set if the user wins or ends the game.
 
 # DEFINE THE PINS USED HERE
 LED_value = [11, 13, 15]
@@ -143,8 +143,12 @@ def fetch_scores():
         score = eeprom.read_block(i, 4) # Read next score (32 bits - 4 words)
 
         # Get letters to create name. Might be bug here!!
-        name = chr(score[0]) + chr(score[1]) + chr(score[2])
-        print("Your name is: " + str(name))
+        l1 = chr(score[0])
+        l2 = chr(score[1])
+        l3 = chr(score[2])
+        
+        name = l1 + l2 + l3
+        #print("Your name is: " + str(name))
 
         current_score_arr.append(str(name))
         current_score_arr.append(score[3])
@@ -267,7 +271,7 @@ def btn_guess_pressed(channel):
     timeElapsed = time.time() - start_time
     buttonStatus = 1    
 
-    if .5 <= timeElapsed < 3:       
+    if .5 <= timeElapsed < 2:       
         buttonStatus = 1        # Submit case
     elif 3 <= timeElapsed:         
         buttonStatus = 2      # Menu
@@ -303,6 +307,7 @@ def btn_guess_pressed(channel):
         GPIO.output(LED_value, GPIO.LOW)
         buzzer.stop()
         led.stop()
+        end_of_game = True
         menu()
 
 
